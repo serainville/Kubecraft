@@ -45,12 +45,12 @@ minecraftserver:
 deploy:
 	@echo "Deploying Controller..."
 	@kubectl apply -f artifacts/examples/crd-minecraftserver.yaml
-	@kubectl apply -f kubecraft-deployment.yaml
+	@kubectl apply -f artifacts/examples/deployment-kubecraft-controller.yaml
 	@kubectl apply -f artifacts/examples/mincraftserver.yaml
 
 teardown:
 	@echo "Tearing down Controller..."
 	@kubectl delete -f artifacts/examples/crd-minecraftserver.yaml
-	@kubectl delete -f kubecraft-deployment.yaml
+	@kubectl delete -f artifacts/examples/deployment-kubecraft-controller.yaml
 
 

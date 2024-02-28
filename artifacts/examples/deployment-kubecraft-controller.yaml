@@ -83,3 +83,10 @@ spec:
       containers:
       - name: kubecraft-controller
         image: kubecraft/kubecraft-controller:v0.1.0
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "10m"
+          limits:
+            memory: "16Mi"
+            cpu: "10m"

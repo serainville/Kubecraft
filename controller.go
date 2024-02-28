@@ -622,6 +622,16 @@ func newStatefulset(mcs *mcsv1alpha1.MinecraftServer) *appsv1.StatefulSet {
 							Name:    "minecraft",
 							Image:   "kubecraft/minecraft-server:v0.1.0",
 							Command: []string{"/usr/local/bin/box64", "/data/bedrock_server"},
+							Resources: corev1.ResourceRequirements{
+								Limits: corev1.ResourceList{
+									corev1.ResourceCPU:    resource.MustParse("2"),
+									corev1.ResourceMemory: resource.MustParse("4Gi"),
+								},
+								Requests: corev1.ResourceList{
+									corev1.ResourceCPU:    resource.MustParse("100m"),
+									corev1.ResourceMemory: resource.MustParse("696Mi"),
+								},
+							},
 							VolumeMounts: []corev1.VolumeMount{
 								{
 									Name:      "minecraft-data",
