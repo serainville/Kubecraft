@@ -28,6 +28,30 @@ spec:
                   type: string
                 replicas:
                   type: integer
+                securityContext:
+                  type: object
+                  properties:
+                    runAsUser:
+                      type: integer
+                    runAsGroup:
+                      type: integer
+                    fsGroup:
+                      type: integer
+                    seLinuxOptions:
+                      type: object
+                      properties:
+                        level:
+                          type: string
+                        role:
+                          type: string
+                        type:
+                          type: string
+                        user:
+                          type: string
+                    supplementalGroups:
+                      type: array
+                      items:
+                        type: integer
                 dataVolume:
                   type: object
                   properties:

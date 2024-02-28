@@ -52,6 +52,8 @@ type MinecraftServerSpec struct {
 	DataVolume *MinecraftPersistentVolume `json:"dataVolume,omitempty"`
 	// Replicas sets the number of replicas to run for the Minecraft server.
 	Replicas int32 `json:"replicas,omitempty"`
+	// SecurityContext is the security context to apply to the Minecraft server pod.
+	SecurityContext *corev1.PodSecurityContext `json:"securityContext,omitempty"`
 	// ServerSettings is a set of settings to apply to the Minecraft server.
 	ServerSettings MinecraftServerSettings `json:"serverSettings"`
 }
