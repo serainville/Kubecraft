@@ -1,0 +1,85 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubecraft-controller
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: minecraft-server
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubecraft-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - endpoints
+  - persistentvolumeclaims
+  - events
+  - configmaps
+  - secrets
+  - serviceaccounts
+  - ingresses
+  - deployments
+  - replicasets
+  - statefulsets
+  - daemonsets
+  - jobs
+  - cronjobs
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - replicasets
+  - statefulsets
+  - daemonsets
+  verbs:
+  - '*'
+- apiGroups:
+  - kubecraft.ca
+  resources:
+  - minecraftservers
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubecraft-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubecraft-controller
+subjects:
+- kind: ServiceAccount
+  name: kubecraft-controller
+  namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubecraft-controller
+  labels:
+    app: kubecraft-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubecraft-controller
+  template:
+    metadata:
+      labels:
+        app: kubecraft-controller
+    spec:
+      serviceAccountName: kubecraft-controller
+      containers:
+      - name: kubecraft-controller
+        image: kubecraft/kubecraft-controller:v0.1.0

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: public-server-mcdata
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: kubecraft.ca/v1alpha1
+kind: MinecraftServer
+metadata:
+  name: public-server
+spec:
+  serverVersion: "1.20.62.02"
+  createService: true
+  replicas: 2
+  serviceAccountName: "minecraft-server"
+  dataVolume:
+    volume:
+      persistentVolumeClaim:
+        claimName:  public-server-mcdata
+  serverSettings:
+    gameMode: "survival"
+    levelSeed: "default"
+---
+apiVersion: kubecraft.ca/v1alpha1
+kind: MinecraftServer
+metadata:
+  name: private-server-a
+spec:
+  serverVersion: "1.20.62.02"
+  createService: true
+  replicas: 1
+  serviceAccountName: "minecraft-server"
+  dataVolume:
+    persistentVolumeClaim:
+      storageClassName: standard
+      accessModes:
+      - ReadWriteOncePod
+      resources:
+        requests:
+          storage: 1Gi
+      volumeMode: Filesystem
+  serverSettings:
+    gameMode: "survival"
+    levelSeed: "default"
+

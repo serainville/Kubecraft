@@ -1,0 +1,74 @@
+apiVersion: kubecraft.ca/v1alpha1
+kind: MinecraftServer
+metadata:
+  name: example-foo
+spec:
+  version: "1.20.20"
+  createService: true
+  statefulset:
+    replicas: 1
+    serviceName: example-foo
+    image: "deepdark:latest"
+    storage: "1Gi"
+  settings:
+    difficulty: "easy"
+    gamemode: "survival"
+    maxPlayers: 20
+    motd: "Welcome to the server!"
+    pvp: true
+    spawnProtection: 16
+    viewDistance: 10
+    whitelist: false
+    worldType: "default"
+    forceGamemode: false
+    allowNether: true
+    enableRcon: false
+    enableQuery: false
+    enableCommandBlock: false
+    opPermissionLevel: 4
+    functionPermissionLevel: 2
+    playerIdleTimeout: 0
+    maxTickTime: 60000
+    maxBuildHeight: 256
+    spawnRadius: 10
+    maxWorldSize: 29999984
+    broadcastConsoleToOps: true
+    broadcastRconToOps: true
+    syncChunkWrites: true
+    enableStatus: true
+    entityBroadcastRangePercentage: 100
+    playerBroadcastRangePercentage: 100
+    maxEntityCollisions: 8
+    entityBroadcastRangePercentage: 100
+    playerBroadcastRangePercentage: 100
+    maxEntityCollisions: 8
+    maxCommandChainLength: 65536
+    ticksPerAnimalSpawns: 400
+    ticksPerMonsterSpawns: 1
+    functionTimeout: 600
+    maxEntityCramming: 24
+    opPermissionLevel: 4
+    functionPermissionLevel: 2
+    playerIdleTimeout: 0
+    maxTickTime: 60000
+    maxBuildHeight: 256
+    spawnRadius: 10
+    maxWorldSize: 29999984
+    broadcastConsoleToOps: true
+    broadcastRconToOps: true
+    syncChunkWrites: true
+    enableStatus: true
+    entityBroadcastRangePercentage: 100
+    playerBroadcastRangePercentage: 100
+    maxEntityCollisions: 8
+    entityBroadcastRangePercentage: 100
+    playerBroadcastRangePercentage: 100
+    maxEntityCollisions: 8
+    maxCommandChainLength: 65536
+    ticksPerAnimalSpawns: 400
+    ticksPerMonsterSpawns: 1
+    functionTimeout: 600
+    maxEntityCramming: 24
+    opPermissionLevel: 4
+    functionPermissionLevel: 2
+    playerIdleTimeout: 0
