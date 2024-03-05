@@ -2,11 +2,21 @@
 
 Kubecraft is a Kubernetes controller used to deploy and managed Minecraft Bedrock servers. Servers are deployed as Statefulsets in order to support persistent voumes with both Read-Write-Once and Read-Write-Many storage modes. 
 
+# How to Use
 
-## MinecraftServer
+Apply the CRDs
 
-MinecraftServer is a customer resource definition (CRD) used to generate a statefulset for your
-Minecraft servers.
+```cmd
+kubectl apply -f artifacts/examples/crd-minecraftserver.yaml
+```
+
+Deploy the Kubecraft-Controller
+
+```cmd
+kubectl apply -f artifacts/examples/deployment-kubecraft-controller.yaml
+```
+
+Create a MineCraft server config
 
 ```yaml
 apiVersion: kubecraft.ca/v1alpha1
@@ -26,6 +36,9 @@ spec:
     gameMode: "survival"
     levelSeed: "default"
 ```
+
+
+## MinecraftServer Spec
 
 - **serverVersion**: sets the version of Minecraft Server to download
 - **dataVolume**: To preserve world data persistent volumes are used. This field can be used to set either a Persistent Volume Claim or a PersistentVolumeClaimTemplate.
@@ -50,7 +63,27 @@ persistent volumes for your Minecraft server's installation and world data.
 | persistentVolumeClaim | Configure a volume to reference an existing PVC and mount it. |
 
 
-### Using PersistentVolumeClaim
+### Persistent Data using Volumes
+Kubernetes Volumes can be defined in the `dataVolume` field for persisting Minecraft server data. The following example shows the use of a Persistent Volume Claim, Other supported volume types are `emptyDir` and `hostPath`.
+
+Create the Persistent Volume Claim and deploy it to your Kuberentes cluster
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: public-server-mcdata
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: example
+```
+
+Then create MinecraftServer object that configures a volume to use the Persistent Volume Claim
 
 ```yaml
 apiVersion: kubecraft.ca/v1alpha1
@@ -73,7 +106,9 @@ spec:
 
 ### Using PersistentVolumeClaimTemplate
 
-PersistentVolumeClaimTemplates are used with Statefulsets in order to dynamically create PersistentVolumeClaims rather than manually create them. As MinecraftServer resources are used to create and manage Statefulsets, they they support the use of PersistentVolumeClaims.
+PersistentVolumeClaimTemplates are used with Statefulsets in order to dynamically create PersistentVolumeClaims. As MinecraftServer resources are used to create and manage Statefulsets, they they support the use of PersistentVolumeClaims.
+
+When using PersistentVolumeClaimTemplates a Minecraft Server deployment with 2 or more replicas cannot share the same volume, limiting the benefits of running multiple server replicas. Unless 2 or more identically configured servers with different world data is desired, avoid the use of PersistentVolumeClaimTemplates. Instead, use the `Volume` field instead, which allows for all replicas to mount a shared volume in read-write-many mode.
 
 The following MinecraftServer config example adds a PersistentVolumnClaim configuration, which will be used to configure a Statefulset with a PersistentVolumeClaimTemplate entry. 
 
